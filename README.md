@@ -36,7 +36,7 @@
 - http://localhost:8007/metadata - all metadata endpoint
 - http://localhost:8007/skip - skip endpoint 
 - http://localhost:8007/nowplaying - nowplaying info endpoint
-Will give us a json with nowplaying and song history:
+Will give us a json with nowplaying and song history (10 tracks):
 
 ```json
 {"station":
