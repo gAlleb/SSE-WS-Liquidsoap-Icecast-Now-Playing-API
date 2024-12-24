@@ -204,3 +204,67 @@ data: {"connect":
 "song_history":
 [{"played_at":1735060884.4,"played_at_timestamp_old":"1735060884.39","played_at_timestamp":1735060884.4,"played_at_date_time_old":"2024/12/24 17:21:24","played_at_date_time":"2024/12/24 17:21:24","playlist":"","filename":"/home/radio/music/Various Artists - BIRP! Best of 2020/041 - Kowloon - Come Over.mp3","song":{"text":"Kowloon - Come Over","artist":"Kowloon","title":"Come Over","album":"Come Over - Single","genre":"Alternative"}}]}},"offset":3}],"recovered":true,"positioned":true,"was_recovering":true}},"ping":25,"session":"043b7d46-ab47","time":1735060899380}}
 ```
+
+<hr />
+
+### Of coursw it's all highly customizable. And even icecas server info can be fetched from inside of Liquidsoap and added to `nowplaying`:
+
+```
+...
+
+icecast_source_name = ref("")
+icecast_source_listeners = ref("")
+icecast_source_start = ref("")
+icecast_server_start = ref("")
+icecast_source_description = ref("")
+
+def icecast_stats()
+  api_url = "https://omfm.ru:8443/status-json.xsl?mount=/stream"  
+  http_response = http.get(api_url)
+
+  if http_response.status_code != 200 then
+      log.important("Request to #{string.quote(api_url)} failed with status \
+                     #{http_response.status_code}. Status message: \
+                     #{string.quote(http_response.status_message)}.")
+      null()
+  else
+    try
+     let json.parse ({
+        icestats
+      } : {
+        icestats: {
+	  server_start: string,
+          source: {
+            genre: string,
+            listener_peak: int,
+            listeners: int,
+            listenurl: string,
+            server_description: string,
+            server_name: string,
+            server_type: string,
+            stream_start: string,
+          }
+        }
+      }) = http_response
+      icecast_source_name := icestats.source.server_name
+      icecast_source_listeners := string(icestats.source.listeners)
+      icecast_source_start := icestats.source.stream_start
+      icecast_server_start := icestats.server_start
+      icecast_source_description := icestats.server_description
+    catch _ do
+      log.important("Unable to parse api response.")
+      null()
+    end
+
+  end
+
+  print("icecast_source_name: #{icecast_source_name()}")
+  print("icecast_source_listeners: #{icecast_source_listeners()}")
+  print("icecast_source_start: #{icecast_source_start()}")
+  print("icecast_server_start: #{icecast_server_start()}")
+
+end
+thread.run(icecast_stats, every=60.)
+
+...
+```
