@@ -1,4 +1,4 @@
-### So this is very very basic hobby radio setup for folks who're trying out `liquidsoap` and `icecast` and want to have `nowplaying` info on their websites or to try at local home environment. All you need is Docker.
+### So this is very very basic hobby radio setup with WS and SSE (via Centrifugo) for folks who're trying out `liquidsoap` and `icecast` and want to have `nowplaying` info on their websites or to try at local home environment. All you need is Docker.
 
 ### It illustrates:
 
