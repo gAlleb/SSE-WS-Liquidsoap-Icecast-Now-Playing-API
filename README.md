@@ -38,7 +38,7 @@
 - http://localhost:8007/nowplaying - nowplaying info endpoint
 Will give us a json with nowplaying and song history:
 
-```
+```json
 {"station":
 {"name":"Radio","shortcode":"radio","timezone":"Europe/London"},
 "now_playing":
@@ -74,7 +74,7 @@ To get our station data we connect to:
 
 Basic `js` implementations (Just like `AzuraCast` ones): 
 
-```
+```js
 const sseBaseUri = "http://localhost:9998/connection/sse";
 const sseUriParams = new URLSearchParams({
   "cf_connect": JSON.stringify({
@@ -133,7 +133,7 @@ sse.onmessage = (e) => {
 
 WS:
 
-```
+```js
 let socket = new WebSocket("wss://localhost:9998/connection/ws);
 
 socket.onopen = function(e) {
@@ -191,7 +191,7 @@ socket.onmessage = function(e) {
 
 Example of incoming data:
 
-```
+```json
 data: {"connect":
 {"client":"4fe1-9386-2ef1ede3f0fa","version":"5.4.9",
 "subs":{"station:radio":
