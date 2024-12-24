@@ -1,30 +1,30 @@
-### So this is very very basic hobby radio setup with WS and SSE (via Centrifugo) for folks who're trying out `liquidsoap` and `icecast` and want to have `nowplaying` info on their websites or to try at local home environment. All you need is Docker.
+#### So this is very very basic hobby radio setup with WS and SSE (via Centrifugo) for folks who're trying out `liquidsoap` and `icecast` and want to have `nowplaying` info on their websites or to try at local home environment. All you need is Docker.
 
-### It illustrates:
+#### It illustrates:
 
 - How Liquidsoap can send `nowplaying` info to your website or homepage using `Server Sent Events` or `Websocket`. 
 - It urges you to stop fetching our `tired` `status-json.xsl` :) Because you may want to stop using `Icecast` at all and look into `HLS`.
 - Liquidsoap doesn't send data directly to `Centrifugo` (although it can) because it's more fancy to have an API where data is collected and sent further enabling "on_track_change" notifications and tunable intervals.
 
-### What we have inside:
+#### What we have inside:
 
 - Liquidsoap v2.3.0 - https://github.com/savonet/liquidsoap (With `entrypoint` script from @vitoucepi)
 - Icecast KH icecast-2.4.0-kh22 - https://github.com/karlheyes/icecast-kh
 - Centrifugo latest - https://github.com/centrifugal/centrifugo
 - Node.js API
 
-### To setup
+#### To setup
 
 - Download the repo
 - Change `- /path/to/music:/home/radio/music` in the `docker-compose.yaml` file. `/path/to/music` -> `/your/real/path/to/music`
 - RUN: `docker compose up -d`
 - It's nice to run under 1000 user acoount.
 
-### Of course you can edit and tune everything inside `docker folder` and scale it to be a real radio station on the internet. 
+#### Of course you can edit and tune everything inside `docker folder` and scale it to be a real radio station on the internet. 
 
 <hr/>
 
-## After installation you'll have following endpoints:
+### After installation you'll have following endpoints:
 
 - http://localhost:8000/stream - your Icecast stream with music
 - http://localhost:8007/skipQueue?queueType=default - skips default queue
@@ -63,7 +63,7 @@ Will give us a json with nowplaying and song history (10 tracks):
 
 Don't fetch it :) cause we got SSE and WS :) :
 
-### Endpoint to get SSE (WS) events
+#### Endpoint to get SSE (WS) events
 
 - wss://localhost:9998/connection/ws
 - http://localhost:9998/connection/sse
@@ -207,7 +207,7 @@ data: {"connect":
 
 <hr />
 
-### Of coursw it's all highly customizable. And even icecas server info can be fetched from inside of Liquidsoap and added to `nowplaying`:
+#### Of coursw it's all highly customizable. And even icecast server info can be fetched from inside of Liquidsoap and then added to `nowplaying`:
 
 ```
 ...
@@ -219,7 +219,7 @@ icecast_server_start = ref("")
 icecast_source_description = ref("")
 
 def icecast_stats()
-  api_url = "https://omfm.ru:8443/status-json.xsl?mount=/stream"  
+  api_url = "http://localhost:8000/status-json.xsl?mount=/stream"  
   http_response = http.get(api_url)
 
   if http_response.status_code != 200 then
