@@ -207,7 +207,7 @@ data: {"connect":
 
 <hr />
 
-#### Of coursу it's all highly customizable. And even icecast server info can be fetched from inside of Liquidsoap and then added to `nowplaying`:
+#### Of course it's all highly customizable. And even icecast server info can be fetched from inside of Liquidsoap and then added to `nowplaying`:
 
 ```
 ...
