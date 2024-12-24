@@ -1,0 +1,104 @@
+services:
+  nodeapi:
+    container_name: nodeapi
+    build:
+      context: ./
+      dockerfile: ./docker/nodeapi/Dockerfile
+    depends_on:
+      - centrifugo
+    environment:
+      - "TZ=Europe/London"
+    user: node:node
+    restart: always
+    ports:
+       - 9999:9999
+    networks:
+       - radio-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+
+  centrifugo:
+    container_name: centrifugo
+    restart: always
+    image: centrifugo/centrifugo:latest
+    volumes:
+      - ./docker/centrifugo/config.json:/centrifugo/config.json
+    command: centrifugo -c config.json
+    ports:
+       - 9998:9998
+    networks:
+       - radio-network
+    depends_on:
+      - icecast
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+
+  liquidsoap:
+    build:
+      context: ./
+      dockerfile: ./docker/liquidsoap/Dockerfile
+      args:
+        - "USER_UID=${USER_UID:-1000}"
+        - "USER_GID=${USER_GID:-1000}"
+    user: 1000:1000
+    container_name: liquidsoap-2.3.0
+    environment:
+      - "TZ=Europe/London"
+    command:
+      - /home/radio/liquidsoap/radio/index.liq
+    volumes:
+      #- /path/to/web/folder/for/hls:/home/radio/liquidsoap/radio/hls
+      - /path/to/music:/home/radio/music
+      - ./docker/liquidsoap/rootfs/home/radio/liquidsoap/radio/log:/home/radio/liquidsoap/radio/log
+    networks:
+      - radio-network
+    depends_on:
+      - nodeapi
+    ports:
+       - 8007:8007
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+
+  icecast:
+    build:
+      context: ./
+      dockerfile: ./docker/icecast/Dockerfile
+      args:
+        - VERSION=kh-icecast-2.4.0-kh22
+    container_name: icecast
+    restart: always
+    networks:
+      - radio-network
+    ports:
+      - 8000:8000
+    environment:
+      - "TZ=Europe/London"
+      - ICECAST_SOURCE_PASSWORD=hackme
+      - ICECAST_ADMIN_PASSWORD=hackme
+      - ICECAST_RELAY_PASSWORD=hackme
+      - ICECAST_HOSTNAME=localhost
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+
+networks:
+  radio-network:
+    driver: bridge
+
+

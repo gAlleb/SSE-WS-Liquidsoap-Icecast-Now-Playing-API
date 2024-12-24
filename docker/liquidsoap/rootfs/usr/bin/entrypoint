@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+set -eu
+
+main() {
+  if [ "${1#-}" != "$1" ] || [ "${1%.liq}" != "$1" ]; then
+    set -- liquidsoap "$@"
+  fi
+
+  if [ "$1" = 'liquidsoap' ] && [ "$(id -u)" -eq '0' ]; then
+    exec su-exec liquidsoap "$0" "$@"
+  fi
+
+  exec "$@"
+}
+
+main "$@"

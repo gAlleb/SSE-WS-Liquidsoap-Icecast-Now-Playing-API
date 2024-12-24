@@ -1,0 +1,38 @@
+{
+  "port": 9998,
+  "admin_password": "111fff50-1111-1111-841a80111fff",
+  "admin_secret": "111fff9a-1111-1111-1111-8cf7ba111fff",
+  "api_insecure": false,
+  "api_key": "111fff39-283d-1111-88ea-111fff98a98a",
+  "allowed_origins": [
+    "*"
+  ],
+  "admin": true,
+  "uni_sse": true,
+  "websocket_disable": true,
+  "uni_websocket": true,
+  "uni_http_stream": true,
+  "internal_port": 9998,
+  "allow_subscribe_for_client": true,
+  "allow_anonymous_connect_without_token": true,
+  "admin_insecure": false,
+  "swagger":  false,
+  "namespaces": [
+    {
+      "name": "station",
+      "history_size": 1,
+      "history_ttl": "30s",
+      "allow_subscribe_for_client": true,
+      "allow_subscribe_for_anonymous": true,
+      "allow_history_for_client": true,
+      "allow_history_for_anonymous": true,
+      "force_recovery": true,
+      "force_recovery_mode": "cache"
+    }
+  ],
+  "uni_sse_handler_prefix": "/connection/sse",
+  "uni_websocket_handler_prefix": "/connection/ws",
+  "client_connect_include_server_time": true
+}
+
+
