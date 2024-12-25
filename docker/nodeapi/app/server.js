@@ -6,7 +6,7 @@ const EventEmitter = require('events');
 const eventEmitter = new EventEmitter();
 eventEmitter.setMaxListeners(500);
 const fs = require('fs');
-let np, np_data, np_data_coma; 
+let np, np_data; 
 let original_timestamp = 0;
 const axios = require('axios');
 
