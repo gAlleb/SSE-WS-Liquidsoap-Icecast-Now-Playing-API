@@ -134,7 +134,7 @@ sse.onmessage = (e) => {
 WS:
 
 ```js
-let socket = new WebSocket("wss://localhost:9998/connection/ws);
+let socket = new WebSocket("ws://localhost:9998/connection/ws);
 
 socket.onopen = function(e) {
   socket.send(JSON.stringify({
