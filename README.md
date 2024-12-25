@@ -268,3 +268,8 @@ thread.run(icecast_stats, every=60.)
 
 ...
 ```
+
+#### With the use of some frontend/webpage it could look like this:
+![Снимок экрана 2024-12-25 в 18 22 32](https://github.com/user-attachments/assets/afdc4441-0ce0-430a-b47a-31612e2bbc7e)
+
+
