@@ -65,7 +65,7 @@ Don't fetch it :) cause we got SSE and WS :) :
 
 #### Endpoint to get SSE (WS) events
 
-- wss://localhost:9998/connection/ws
+- ws://localhost:9998/connection/ws
 - http://localhost:9998/connection/sse
 
 To get our station data we connect to: 
