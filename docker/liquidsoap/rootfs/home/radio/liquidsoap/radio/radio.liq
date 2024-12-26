@@ -187,8 +187,6 @@ end
 
 end
 s.on_metadata(save_history)
- 
-
 
 def send_mq_event(payload)
 
@@ -457,6 +455,53 @@ end
 end
 
 harbor.http.register.simple("/nowplaying", get_metadata, port=8007, method="GET")
+
+def get_cover(_)
+
+
+  m = s.last_metadata() ?? []
+
+
+def get_cover_base64(~coverart_mime=null(), ~base64=true, m) =
+  c = metadata.cover(coverart_mime=coverart_mime, m)
+    if
+      null.defined(c)
+    then
+      c = null.get(c)
+      string.data_uri.encode(base64=base64, mime=c.mime, c)
+    else
+     ""
+    end
+end
+  
+
+  data = {
+
+		cover = get_cover_base64(m)
+  
+          }
+ try
+
+  http.response(
+    status_code=200,
+    content_type="text/html",
+    data='<html><body><center><img height=500 width=500 src="#{get_cover_base64(m)}" /></center></body></html>'
+)
+  
+
+ catch error do
+
+  log.severe(error.message, label="http")
+  http.response(
+    status_code=500,
+    content_type="application/json; charset=UTF-8",
+    data='{"status":"error","message":"Failed to serialize response data"}' ^ "\n"
+  )
+
+  end
+end
+
+harbor.http.register.simple("/cover", get_cover, port=8007, method="GET")
 
 meta = ref([])
 s.on_metadata(fun (m) -> meta := m)
