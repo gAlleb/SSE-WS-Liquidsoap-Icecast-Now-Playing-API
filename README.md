@@ -8,7 +8,7 @@
 
 #### What we have inside:
 
-- Liquidsoap v2.3.0 - https://github.com/savonet/liquidsoap (With `entrypoint` script from @vitoucepi)
+- Liquidsoap v2.3.0 - https://github.com/savonet/liquidsoap (dockerfile with `entrypoint` script from @vitoyucepi)
 - Icecast KH icecast-2.4.0-kh22 - https://github.com/karlheyes/icecast-kh
 - Centrifugo latest - https://github.com/centrifugal/centrifugo
 - Node.js API
