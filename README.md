@@ -35,7 +35,7 @@
 - http://localhost:8007/queueFile?file=/path/to/file - queues file to interrupting queue
 - http://localhost:8007/metadata - all metadata endpoint
 - http://localhost:8007/skip - skip endpoint
-- http://localhost:8007/cover - coverart endpoint will show yyou current coverart if your file is tagged with it
+- http://localhost:8007/cover - coverart endpoint will show you current coverart if your file is tagged with it
 - http://localhost:8007/nowplaying - nowplaying info endpoint
 
 Will give us a json with nowplaying and song history (10 tracks):
