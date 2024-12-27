@@ -17,7 +17,7 @@
 
 - Download the repo
 - Change `- /path/to/music:/home/radio/music` in the `docker-compose.yaml` file. `/path/to/music` -> `/your/real/path/to/music`
-- RUN: `docker compose up -d`
+- RUN: `docker compose up -d` or `docker compose up`(to see wtf is happening :)
 - It's nice to run under 1000 user acoount.
 
 #### Of course you can edit and tune everything inside `docker folder` and scale it to be a real radio station on the internet. 
