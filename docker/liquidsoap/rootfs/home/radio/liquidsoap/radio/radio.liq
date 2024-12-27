@@ -8,6 +8,8 @@ s = fallback(track_sensitive=true, [default_queue, s])
 
 s = fallback(track_sensitive=false, [interrupting_queue, s])
 
+number_queue = ref(0) 
+
 def play(request)
  fname = request.query["file"]
  option = request.query["track_sensitive"]
@@ -18,14 +20,29 @@ def play(request)
 
     if option == "true" then
       default_queue.push.uri("#{fname}")
-      http.response(data="Request pushed to default queue.")
+      
+      number_queue := number_queue() + 1
+      q = default_queue.queue()
+
+    http.response(content_type="application/json; charset=UTF-8", status_code=200, data=json.stringify({status = "success", message = "Pushed: #{fname} to default queue", pushed_track_count = number_queue(), remaining_tracks_in_queue = list.length(q)}))
+
     else
+
       interrupting_queue.push.uri("#{fname}")
-      http.response(data="Request pushed to interrupting queue.")
+
+      number_queue := number_queue() + 1
+      q = interrupting_queue.queue()
+
+    http.response(content_type="application/json; charset=UTF-8", status_code=200, data=json.stringify({status = "success", message = "Pushed: #{fname} to interrupting queue", pushed_track_count = number_queue(), remaining_tracks_in_queue = list.length(q)}))  
+ 
     end
+
    else
-    http.response(status_code=404, data="Invalid file.")
+
+    http.response(content_type="application/json; charset=UTF-8", status_code=404, data=json.stringify({status = "error", message = "Invalid file: #{fname}"}))
+
    end
+
 end
 
 harbor.http.register.simple("/queueFile", play, port=8007, method="GET")
@@ -41,12 +58,14 @@ def play_playlist(request)
        let (_, uri) = x
        default_queue.push.uri(uri)
      end, playlist.parse("#{playlist_name}"))
-
-  q = default_queue.queue()
+          
+          number_queue := number_queue() + list.length(playlist.files(playlist_name))
+          q = default_queue.queue()
 
           http.response(content_type="application/json; charset=UTF-8", status_code=200, 
           data=json.stringify({
           status = "success", message = "Pushed to default queue: #{playlist_name}.", 
+	  pushed_track_count = number_queue(), 
           remaining_tracks_in_queue = list.length(q), 
           files_pushed = playlist.files(playlist_name)
           }))
@@ -57,11 +76,13 @@ def play_playlist(request)
        interrupting_queue.push.uri(uri)
      end, playlist.parse("#{playlist_name}"))
 
-  q = interrupting_queue.queue()
+          number_queue := number_queue() + list.length(playlist.files(playlist_name))
+          q = interrupting_queue.queue()
 
           http.response(content_type="application/json; charset=UTF-8", status_code=200, 
           data=json.stringify({
           status = "success", message = "Pushed to interrupting queue: #{playlist_name}.", 
+          pushed_track_count = number_queue(),  
           remaining_tracks_in_queue = list.length(q), 
           files_pushed = playlist.files(playlist_name)
           }))
