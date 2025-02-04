@@ -1,0 +1,47 @@
+[http_api]
+insecure = false
+key = "111fff39-283d-1111-88ea-111fff98a98a"
+
+[client]
+allowed_origins = ["*"]
+allow_anonymous_connect_without_token = true
+connect_include_server_time = true
+
+[swagger]
+enabled = false
+
+[admin]
+enabled = true
+insecure = false
+password = "111fff50-1111-1111-841a80111fff"
+secret = "111fff9a-1111-1111-1111-8cf7ba111fff"
+
+[uni_websocket]
+enabled = true
+handler_prefix = "/connection/ws"
+
+[uni_sse]
+enabled = true
+handler_prefix = "/connection/sse"
+
+[uni_http_stream]
+enabled = true
+
+[http_server]
+port = 9998
+internal_port = 9998
+
+[websocket]
+disabled = true
+
+[[channel.namespaces]]
+name = "station"
+history_size = 1
+history_ttl = "30s"
+allow_subscribe_for_client = true
+allow_subscribe_for_anonymous = true
+allow_history_for_client = true
+allow_history_for_anonymous = true
+force_recovery = true
+force_recovery_mode = "cache"
+
